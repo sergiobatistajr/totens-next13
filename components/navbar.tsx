@@ -1,7 +1,9 @@
+"use client";
 import Link from "next/link";
-
+import { signOut } from "next-auth/react";
 import MainNav from "@/components/main-nav";
 import Container from "@/components/ui/container";
+import { Button } from "@/components/ui/button";
 
 const Navbar = async () => {
   const formattedLinks = [
@@ -13,6 +15,10 @@ const Navbar = async () => {
       href: "/tvs",
       name: "TVs",
     },
+    {
+      href: "/admin",
+      name: "Sistema",
+    },
   ];
 
   return (
@@ -23,6 +29,9 @@ const Navbar = async () => {
             <p className="font-bold text-xl">AR Hoteis</p>
           </Link>
           <MainNav data={formattedLinks} />
+          <Button variant="ghost" onClick={() => signOut()}>
+            Sair
+          </Button>
         </div>
       </Container>
     </div>

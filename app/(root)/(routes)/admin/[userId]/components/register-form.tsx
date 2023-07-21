@@ -88,11 +88,12 @@ const Register: React.FC<RegisterFormProps> = ({ initialData }) => {
         toast.success(toastMessage);
         router.refresh();
         router.push("/register");
+      } else {
+        await axios.post("/api/register", values);
+        toast.success(toastMessage);
+        router.refresh();
+        router.push("/register");
       }
-      await axios.post("/api/register", values);
-      toast.success(toastMessage);
-      router.refresh();
-      router.push("/register");
     } catch (error: any) {
       toast.error("Algo deu errado.");
     } finally {
