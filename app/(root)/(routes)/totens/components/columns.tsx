@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-
+import { CellImages } from "./cell-images";
 import { CellAction } from "./cell-action";
 
 export type TotenColumn = {
@@ -18,6 +18,7 @@ export const columns: ColumnDef<TotenColumn>[] = [
   {
     accessorKey: "images",
     header: "Imagens",
+    cell: ({ row }) => <CellImages data={row.original} />,
   },
   {
     id: "actions",

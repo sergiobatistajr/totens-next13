@@ -2,12 +2,8 @@ import prismadb from "@/lib/prismadb";
 
 import { TotenClient } from "./components/client";
 
-const ProductsPage = async ({ params }: { params: { totenId: string } }) => {
+const ProductsPage = async () => {
   const toten = await prismadb.toten.findMany({
-    where: {
-      id: params.totenId,
-    },
-
     include: {
       images: true,
     },
