@@ -30,8 +30,8 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onConfirm = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/totens/${data.id}`);
-      toast.success("Toten deleted.");
+      await axios.delete(`/api/register/${data.id}`);
+      toast.success("User deleted.");
       router.refresh();
     } catch (error) {
       toast.error("Algo deu errado");
@@ -66,7 +66,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuItem onClick={() => onCopy(data.id)}>
             <Copy className="mr-2 h-4 w-4" /> Copiar Id
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push(`/totens/${data.id}`)}>
+          <DropdownMenuItem onClick={() => router.push(`/admin/${data.id}`)}>
             <Edit className="mr-2 h-4 w-4" /> Atualizar
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>

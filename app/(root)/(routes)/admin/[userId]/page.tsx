@@ -1,5 +1,5 @@
 import prismadb from "@/lib/prismadb";
-import Register from "./components/register-form";
+import ClientForm from "./components/client";
 import { redirect } from "next/navigation";
 
 const UserPage = async ({ params }: { params: { userId: string } }) => {
@@ -14,7 +14,7 @@ const UserPage = async ({ params }: { params: { userId: string } }) => {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <Register initialData={user} />
+        <ClientForm initialData={user} />
       </div>
     </div>
   );

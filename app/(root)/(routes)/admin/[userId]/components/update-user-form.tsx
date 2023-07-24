@@ -33,67 +33,38 @@ import { Separator } from "@/components/ui/separator";
 
 const roles = ["admin", "eventos", "marketing"];
 
-const formSchema = z
-  .object({
-    name: z.string().min(3, "Nome muito curto"),
-    username: z.string().min(3, "Usuário muito curto"),
-    password: z.string().min(6, "Senha muito curta"),
-    confirmPassword: z.string().min(6, "Senha muito curta"),
-    role: z.enum(["admin", "eventos", "marketing"]),
-    isActive: z.boolean(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "As senhas não são iguais",
-    path: ["confirmPassword"],
-  });
+const formSchema = z.object({
+  name: z.string().min(3, "Nome muito curto"),
+  username: z.string().min(3, "Usuário muito curto"),
+  role: z.enum(["admin", "eventos", "marketing"]),
+  isActive: z.boolean(),
+});
 
-interface RegisterFormProps {
+interface UserUpdateFormProps {
   initialData: User | null;
 }
 
-const Register: React.FC<RegisterFormProps> = ({ initialData }) => {
+const UserUpdate: React.FC<UserUpdateFormProps> = ({ initialData }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
   const params = useParams();
 
-  const title = initialData ? "Editar usuário" : "Criar usuário";
-  const description = initialData
-    ? "Editar um usuário."
-    : "Adicionar um novo usuário.";
-  const toastMessage = initialData ? "Usuário atualizada." : "Usuário criado.";
-  const action = initialData ? "Salvar alterações" : "Criar";
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...initialData,
-      password: "",
-      confirmPassword: "",
-    } || {
-      name: "",
-      username: "",
-      password: "",
-      confirmPassword: "",
-      role: "",
-      isActive: false,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
-      if (initialData) {
-        await axios.patch(`/api/register/${params.userId}`, values);
-        toast.success(toastMessage);
-        router.refresh();
-        router.push("/register");
-      } else {
-        await axios.post("/api/register", values);
-        toast.success(toastMessage);
-        router.refresh();
-        router.push("/register");
-      }
+
+      await axios.patch(`/api/register/${params.userId}`, values);
+      toast.success("Usuário atualizado com sucesso.");
+      router.refresh();
+      router.push("/admin");
     } catch (error: any) {
       toast.error("Algo deu errado.");
     } finally {
@@ -104,7 +75,10 @@ const Register: React.FC<RegisterFormProps> = ({ initialData }) => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={title} description={description} />
+        <Heading
+          title="Editar usuário"
+          description="Edite os dados do usuário"
+        />
       </div>
       <Separator />
       <Form {...form}>
@@ -169,34 +143,6 @@ const Register: React.FC<RegisterFormProps> = ({ initialData }) => {
             />
             <FormField
               control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Senha</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="******" {...field} />
-                  </FormControl>
-                  <FormDescription>Esta é sua senha</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirme a senha</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="******" {...field} />
-                  </FormControl>
-                  <FormDescription>Confirme sua senha</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="isActive"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
@@ -219,7 +165,7 @@ const Register: React.FC<RegisterFormProps> = ({ initialData }) => {
           </div>
           <div className="space-x-2 flex items-center justify-start w-full">
             <Button disabled={isLoading} type="submit">
-              {action}
+              {isLoading ? "Salvando..." : "Salvar"}
             </Button>
           </div>
         </form>
@@ -228,4 +174,4 @@ const Register: React.FC<RegisterFormProps> = ({ initialData }) => {
   );
 };
 
-export default Register;
+export default UserUpdate;
