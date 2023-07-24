@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Copy, Edit, MoreHorizontal, Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { ResetPasswordModal } from "./modals/reset-password-modal";
 import { UsersColum } from "./columns";
 
 interface CellActionProps {
@@ -26,6 +27,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const onConfirm = async () => {
     try {
@@ -54,6 +56,11 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         onConfirm={onConfirm}
         loading={loading}
       />
+      <ResetPasswordModal
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        id={data.id}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -68,6 +75,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push(`/admin/${data.id}`)}>
             <Edit className="mr-2 h-4 w-4" /> Atualizar
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setIsMenuOpen(true)}>
+            <Pen className="mr-2 h-4 w-4" />
+            Resetar Senha
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" /> Deletar
