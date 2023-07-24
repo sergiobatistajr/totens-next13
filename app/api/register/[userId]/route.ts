@@ -71,6 +71,7 @@ export async function PATCH(
     const user = await getUser();
 
     const { name, username, isActive, role } = body;
+
     if (!user) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
@@ -85,9 +86,7 @@ export async function PATCH(
     if (!username) {
       return new NextResponse("Username is required");
     }
-    if (!isActive) {
-      return new NextResponse("IsActive is required");
-    }
+
     if (!role) {
       return new NextResponse("Role is required");
     }

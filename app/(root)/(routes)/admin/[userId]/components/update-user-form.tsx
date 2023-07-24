@@ -41,7 +41,7 @@ const formSchema = z.object({
 });
 
 interface UserUpdateFormProps {
-  initialData: User | null;
+  initialData: User;
 }
 
 const UserUpdate: React.FC<UserUpdateFormProps> = ({ initialData }) => {
@@ -60,6 +60,7 @@ const UserUpdate: React.FC<UserUpdateFormProps> = ({ initialData }) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
+      console.log(values);
 
       await axios.patch(`/api/register/${params.userId}`, values);
       toast.success("Usuário atualizado com sucesso.");
