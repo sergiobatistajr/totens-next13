@@ -15,8 +15,8 @@ export const CellImages: React.FC<CellImagesProps> = ({ data }) => {
           key={index}
           src={image}
           alt={data.name}
-          width={100}
-          height={100}
+          width={50}
+          height={50}
           layout="fixed"
         />
       ))}
